@@ -2,6 +2,7 @@ import json
 import shutil
 import subprocess
 import sys
+from datetime import date, timedelta
 from pathlib import Path
 
 import pytest
@@ -88,4 +89,77 @@ def test_gs03_llistat_amb_registres(app):
     assert resultat.stdout.strip().splitlines() == [
         "[1] Pràctica 1 (RS) - estat: pendent",
         "[2] Examen parcial (SO) - estat: pendent",
+    ]
+
+
+def test_gs04_creacio_amb_data_limit(app):
+    executar, fitxer_tasques = app
+
+    resultat = executar(
+        "add",
+        "--title",
+        "Entrega RS",
+        "--subject",
+        "RS",
+        "--due",
+        "2026-12-01",
+    )
+
+    assert resultat.returncode == 0
+    assert resultat.stdout.strip() == "Tasca [ID: 1] creada amb èxit"
+    dades = json.loads(fitxer_tasques.read_text(encoding="utf-8"))
+    assert dades[0]["data_limit"] == "2026-12-01"
+
+
+def test_gs05_llistat_tasca_caducada(app):
+    executar, fitxer_tasques = app
+    data_caducada = date.today() - timedelta(days=1)
+    fitxer_tasques.write_text(
+        json.dumps(
+            [
+                {
+                    "id": 1,
+                    "títol": "Pràctica antiga",
+                    "assignatura": "RS",
+                    "estat": "pendent",
+                    "data_limit": data_caducada.isoformat(),
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    resultat = executar("list")
+
+    assert resultat.returncode == 0
+    assert resultat.stdout.strip().splitlines() == [
+        "[1] Pràctica antiga (RS) - estat: pendent [CADUCADA]"
+    ]
+
+
+def test_gs06_llistat_tasca_urgent(app):
+    executar, fitxer_tasques = app
+    data_urgent = date.today() + timedelta(days=2)
+    fitxer_tasques.write_text(
+        json.dumps(
+            [
+                {
+                    "id": 2,
+                    "títol": "Examen demà",
+                    "assignatura": "SO",
+                    "estat": "pendent",
+                    "data_limit": data_urgent.isoformat(),
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    resultat = executar("list")
+
+    assert resultat.returncode == 0
+    assert resultat.stdout.strip().splitlines() == [
+        "[2] Examen demà (SO) - estat: pendent [URGENT]"
     ]

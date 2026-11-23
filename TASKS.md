@@ -26,7 +26,7 @@ Objectiu: Permetre indicar `--due YYYY-MM-DD` en crear tasques i mostrar `[CADUC
 ### Tasques d'Execució (Part A):
 - [x] Tasca 2.1: Actualitzar el model `Tasca` a `src/models.py` i el comandament `add` a `src/tasks_app.py` per suportar l'argument opcional `--due YYYY-MM-DD`. (Requisit RF-05)
 - [x] Tasca 2.2: Actualitzar el comandament `list` a `src/tasks_app.py` per mostrar les etiquetes `[CADUCADA]` i `[URGENT]` segons la data actual en tasques pendents. (Requisits RF-06 i RF-07)
-- [ ] Tasca 2.3: Afegir tests d'integració a `test/test_tasks_app.py` per als escenaris GS-04, GS-05 i GS-06 i verificar que tots els tests passen (`python3 -m pytest test`).
+- [x] Tasca 2.3: Afegir tests d'integració a `test/test_tasks_app.py` per als escenaris GS-04, GS-05 i GS-06 i verificar que tots els tests passen (`python3 -m pytest test`).
 
 
 
