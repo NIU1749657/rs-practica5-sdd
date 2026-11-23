@@ -67,6 +67,17 @@ def editar_tasca(
     print(f"No s'ha trobat cap tasca amb ID {id_tasca}.")
 
 
+def completar_tasca(id_tasca: int) -> None:
+    tasques = carregar_tasques()
+    for tasca in tasques:
+        if tasca.id == id_tasca:
+            tasca.estat = "completada"
+            desar_tasques(tasques)
+            print(f"Tasca [ID: {tasca.id}] marcada com a completada")
+            return
+    print(f"No s'ha trobat cap tasca amb ID {id_tasca}.")
+
+
 def etiqueta_alerta(tasca: Task, avui: date | None = None) -> str:
     if tasca.estat != "pendent" or tasca.data_limit is None:
         return ""
@@ -126,6 +137,13 @@ def crear_parser() -> argparse.ArgumentParser:
     parser_edit.add_argument("--due", help="Nova data límit (YYYY-MM-DD)")
     parser_edit.add_argument("--status", help="Nou estat de la tasca")
 
+    parser_complete = subparsers.add_parser(
+        "complete", help="Marcar una tasca com a completada"
+    )
+    parser_complete.add_argument(
+        "--id", required=True, type=int, help="Identificador de la tasca"
+    )
+
     subparsers.add_parser("list", help="Llistar totes les tasques")
     return parser
 
@@ -139,6 +157,8 @@ def main(argv: list[str] | None = None) -> None:
         editar_tasca(
             args.id, args.title, args.subject, args.due, args.status
         )
+    elif args.comandament == "complete":
+        completar_tasca(args.id)
     elif args.comandament == "list":
         llistar_tasques()
 
