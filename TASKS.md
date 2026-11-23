@@ -28,5 +28,12 @@ Objectiu: Permetre indicar `--due YYYY-MM-DD` en crear tasques i mostrar `[CADUC
 - [x] Tasca 2.2: Actualitzar el comandament `list` a `src/tasks_app.py` per mostrar les etiquetes `[CADUCADA]` i `[URGENT]` segons la data actual en tasques pendents. (Requisits RF-06 i RF-07)
 - [x] Tasca 2.3: Afegir tests d'integració a `test/test_tasks_app.py` per als escenaris GS-04, GS-05 i GS-06 i verificar que tots els tests passen (`python3 -m pytest test`).
 
+## Increment 2 (Part B): Edició i Completat de Tasques
+Objectiu: Permetre modificar atributs d'una tasca per ID (`edit --id`) i marcar tasques com a completades (`complete --id`).
+
+### Tasques d'Execució (Part B):
+- [ ] Tasca 2.4: Implementar el comandament `edit --id <ID>` a `src/tasks_app.py` per modificar qualsevol atribut (`--title`, `--subject`, `--due`, `--status`). (Requisit RF-08)
+- [ ] Tasca 2.5: Implementar el comandament `complete --id <ID>` a `src/tasks_app.py` per canviar l'estat d'una tasca a `'completada'`. (Requisit RF-09)
+- [ ] Tasca 2.6: Afegir tests d'integració a `test/test_tasks_app.py` per als escenaris GS-07 i GS-08 i verificar que tots els tests passen (`python3 -m pytest test`).
 
 
