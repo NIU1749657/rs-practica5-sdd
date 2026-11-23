@@ -1,1 +1,30 @@
-[]
+[
+  {
+    "id": 1,
+    "títol": "Entrega Practica 5",
+    "assignatura": "RS",
+    "estat": "pendent",
+    "data_limit": "2026-12-15"
+  },
+  {
+    "id": 2,
+    "títol": "Repasar examen parcial",
+    "assignatura": "SO",
+    "estat": "pendent",
+    "data_limit": "2026-11-26"
+  },
+  {
+    "id": 3,
+    "títol": "Llegir article Joel Spolsky",
+    "assignatura": "RS",
+    "estat": "pendent",
+    "data_limit": "2026-11-10"
+  },
+  {
+    "id": 4,
+    "títol": "Preparar presentacio",
+    "assignatura": "GABD",
+    "estat": "completada",
+    "data_limit": null
+  }
+]
