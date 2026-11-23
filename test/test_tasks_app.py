@@ -163,3 +163,73 @@ def test_gs06_llistat_tasca_urgent(app):
     assert resultat.stdout.strip().splitlines() == [
         "[2] Examen demà (SO) - estat: pendent [URGENT]"
     ]
+
+
+def test_gs07_modificacio_atributs_per_id(app):
+    executar, fitxer_tasques = app
+    fitxer_tasques.write_text(
+        json.dumps(
+            [
+                {
+                    "id": 1,
+                    "títol": "Pràctica 1",
+                    "assignatura": "RS",
+                    "estat": "pendent",
+                    "data_limit": None,
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    resultat = executar(
+        "edit",
+        "--id",
+        "1",
+        "--title",
+        "Pràctica 1 Corregida",
+        "--due",
+        "2026-12-15",
+    )
+
+    assert resultat.returncode == 0
+    assert resultat.stdout.strip() == "Tasca [ID: 1] modificada amb èxit"
+    dades = json.loads(fitxer_tasques.read_text(encoding="utf-8"))
+    assert dades == [
+        {
+            "id": 1,
+            "títol": "Pràctica 1 Corregida",
+            "assignatura": "RS",
+            "estat": "pendent",
+            "data_limit": "2026-12-15",
+        }
+    ]
+
+
+def test_gs08_marcar_tasca_completada_per_id(app):
+    executar, fitxer_tasques = app
+    fitxer_tasques.write_text(
+        json.dumps(
+            [
+                {
+                    "id": 1,
+                    "títol": "Pràctica 1",
+                    "assignatura": "RS",
+                    "estat": "pendent",
+                    "data_limit": None,
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    resultat = executar("complete", "--id", "1")
+
+    assert resultat.returncode == 0
+    assert resultat.stdout.strip() == (
+        "Tasca [ID: 1] marcada com a completada"
+    )
+    dades = json.loads(fitxer_tasques.read_text(encoding="utf-8"))
+    assert dades[0]["estat"] == "completada"
