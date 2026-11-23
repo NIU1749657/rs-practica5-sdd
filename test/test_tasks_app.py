@@ -272,3 +272,73 @@ def test_gs09_resum_estadistic(app):
         "Total: 3 | Pendents: 2 | Completades: 1 | "
         "Caducades: 1 | Urgents: 1"
     )
+
+
+def test_gs10_filtrat_per_assignatura(app):
+    executar, fitxer_tasques = app
+    tasques = [
+        {
+            "id": 1,
+            "títol": "Pràctica 1",
+            "assignatura": "RS",
+            "estat": "pendent",
+        },
+        {
+            "id": 2,
+            "títol": "Examen parcial",
+            "assignatura": "SO",
+            "estat": "pendent",
+        },
+    ]
+    fitxer_tasques.write_text(
+        json.dumps(tasques, ensure_ascii=False), encoding="utf-8"
+    )
+
+    resultat = executar("list", "--subject", "RS")
+
+    assert resultat.returncode == 0
+    assert resultat.stdout.strip().splitlines() == [
+        "[1] Pràctica 1 (RS) - estat: pendent"
+    ]
+
+    resultat = executar("list", "--subject", "rs")
+
+    assert resultat.returncode == 0
+    assert resultat.stdout.strip().splitlines() == [
+        "[1] Pràctica 1 (RS) - estat: pendent"
+    ]
+
+
+def test_gs11_filtrat_per_paraula_clau(app):
+    executar, fitxer_tasques = app
+    tasques = [
+        {
+            "id": 1,
+            "títol": "Pràctica 1",
+            "assignatura": "RS",
+            "estat": "pendent",
+        },
+        {
+            "id": 2,
+            "títol": "Examen parcial",
+            "assignatura": "SO",
+            "estat": "pendent",
+        },
+    ]
+    fitxer_tasques.write_text(
+        json.dumps(tasques, ensure_ascii=False), encoding="utf-8"
+    )
+
+    resultat = executar("list", "--keyword", "Examen")
+
+    assert resultat.returncode == 0
+    assert resultat.stdout.strip().splitlines() == [
+        "[2] Examen parcial (SO) - estat: pendent"
+    ]
+
+    resultat = executar("list", "--keyword", "examen")
+
+    assert resultat.returncode == 0
+    assert resultat.stdout.strip().splitlines() == [
+        "[2] Examen parcial (SO) - estat: pendent"
+    ]
