@@ -20,5 +20,13 @@ Objectiu: Tenir una versió CLI funcional per afegir i consultar tasques en JSON
 
 \- \[x] Tasca 1.5: Validar execució amb OpenCode i verificar que tots els tests passen (`python3 -m pytest test`).
 
+## Increment 2 (Part A): Dates Límit i Alertes
+Objectiu: Permetre indicar `--due YYYY-MM-DD` en crear tasques i mostrar `[CADUCADA]` o `[URGENT]` al llistat.
+
+### Tasques d'Execució (Part A):
+- [ ] Tasca 2.1: Actualitzar el model `Tasca` a `src/models.py` i el comandament `add` a `src/tasks_app.py` per suportar l'argument opcional `--due YYYY-MM-DD`. (Requisit RF-05)
+- [ ] Tasca 2.2: Actualitzar el comandament `list` a `src/tasks_app.py` per mostrar les etiquetes `[CADUCADA]` i `[URGENT]` segons la data actual en tasques pendents. (Requisits RF-06 i RF-07)
+- [ ] Tasca 2.3: Afegir tests d'integració a `test/test_tasks_app.py` per als escenaris GS-04, GS-05 i GS-06 i verificar que tots els tests passen (`python3 -m pytest test`).
+
 
 
