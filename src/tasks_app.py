@@ -43,6 +43,30 @@ def afegir_tasca(
     print(f"Tasca [ID: {tasca.id}] creada amb èxit")
 
 
+def editar_tasca(
+    id_tasca: int,
+    títol: str | None = None,
+    assignatura: str | None = None,
+    data_limit: str | None = None,
+    estat: str | None = None,
+) -> None:
+    tasques = carregar_tasques()
+    for tasca in tasques:
+        if tasca.id == id_tasca:
+            if títol is not None:
+                tasca.títol = títol
+            if assignatura is not None:
+                tasca.assignatura = assignatura
+            if data_limit is not None:
+                tasca.data_limit = data_limit
+            if estat is not None:
+                tasca.estat = estat
+            desar_tasques(tasques)
+            print(f"Tasca [ID: {tasca.id}] modificada amb èxit")
+            return
+    print(f"No s'ha trobat cap tasca amb ID {id_tasca}.")
+
+
 def etiqueta_alerta(tasca: Task, avui: date | None = None) -> str:
     if tasca.estat != "pendent" or tasca.data_limit is None:
         return ""
@@ -89,6 +113,19 @@ def crear_parser() -> argparse.ArgumentParser:
         "--due", help="Data límit opcional (YYYY-MM-DD)"
     )
 
+    parser_edit = subparsers.add_parser(
+        "edit", help="Modificar els atributs d'una tasca"
+    )
+    parser_edit.add_argument(
+        "--id", required=True, type=int, help="Identificador de la tasca"
+    )
+    parser_edit.add_argument("--title", help="Nou títol de la tasca")
+    parser_edit.add_argument(
+        "--subject", help="Nova assignatura de la tasca"
+    )
+    parser_edit.add_argument("--due", help="Nova data límit (YYYY-MM-DD)")
+    parser_edit.add_argument("--status", help="Nou estat de la tasca")
+
     subparsers.add_parser("list", help="Llistar totes les tasques")
     return parser
 
@@ -98,6 +135,10 @@ def main(argv: list[str] | None = None) -> None:
     args = parser.parse_args(argv)
     if args.comandament == "add":
         afegir_tasca(args.title, args.subject, args.due)
+    elif args.comandament == "edit":
+        editar_tasca(
+            args.id, args.title, args.subject, args.due, args.status
+        )
     elif args.comandament == "list":
         llistar_tasques()
 

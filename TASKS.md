@@ -32,7 +32,7 @@ Objectiu: Permetre indicar `--due YYYY-MM-DD` en crear tasques i mostrar `[CADUC
 Objectiu: Permetre modificar atributs d'una tasca per ID (`edit --id`) i marcar tasques com a completades (`complete --id`).
 
 ### Tasques d'Execució (Part B):
-- [ ] Tasca 2.4: Implementar el comandament `edit --id <ID>` a `src/tasks_app.py` per modificar qualsevol atribut (`--title`, `--subject`, `--due`, `--status`). (Requisit RF-08)
+- [x] Tasca 2.4: Implementar el comandament `edit --id <ID>` a `src/tasks_app.py` per modificar qualsevol atribut (`--title`, `--subject`, `--due`, `--status`). (Requisit RF-08)
 - [ ] Tasca 2.5: Implementar el comandament `complete --id <ID>` a `src/tasks_app.py` per canviar l'estat d'una tasca a `'completada'`. (Requisit RF-09)
 - [ ] Tasca 2.6: Afegir tests d'integració a `test/test_tasks_app.py` per als escenaris GS-07 i GS-08 i verificar que tots els tests passen (`python3 -m pytest test`).
 
