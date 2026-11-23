@@ -41,7 +41,7 @@ Objectiu: Implementar `list --summary` per mostrar el recompte global de tasques
 
 ### Tasques d'Execució (Part A):
 - [x] Tasca 3.1: Actualitzar el comandament `list` a `src/tasks_app.py` per suportar l'opció `--summary` i mostrar el total de tasques, pendents, completades, caducades i urgents. (Requisit RF-10)
-- [ ] Tasca 3.2: Afegir test d'integració a `test/test_tasks_app.py` per a l'escenari GS-09 i verificar que tots els tests passen (`python3 -m pytest test`).
+- [x] Tasca 3.2: Afegir test d'integració a `test/test_tasks_app.py` per a l'escenari GS-09 i verificar que tots els tests passen (`python3 -m pytest test`).
 
 
 

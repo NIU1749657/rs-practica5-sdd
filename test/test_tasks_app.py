@@ -233,3 +233,42 @@ def test_gs08_marcar_tasca_completada_per_id(app):
     )
     dades = json.loads(fitxer_tasques.read_text(encoding="utf-8"))
     assert dades[0]["estat"] == "completada"
+
+
+def test_gs09_resum_estadistic(app):
+    executar, fitxer_tasques = app
+    avui = date.today()
+    tasques = [
+        {
+            "id": 1,
+            "títol": "Pràctica feta",
+            "assignatura": "RS",
+            "estat": "completada",
+            "data_limit": None,
+        },
+        {
+            "id": 2,
+            "títol": "Pràctica antiga",
+            "assignatura": "RS",
+            "estat": "pendent",
+            "data_limit": (avui - timedelta(days=1)).isoformat(),
+        },
+        {
+            "id": 3,
+            "títol": "Examen proper",
+            "assignatura": "SO",
+            "estat": "pendent",
+            "data_limit": (avui + timedelta(days=2)).isoformat(),
+        },
+    ]
+    fitxer_tasques.write_text(
+        json.dumps(tasques, ensure_ascii=False), encoding="utf-8"
+    )
+
+    resultat = executar("list", "--summary")
+
+    assert resultat.returncode == 0
+    assert resultat.stdout.strip() == (
+        "Total: 3 | Pendents: 2 | Completades: 1 | "
+        "Caducades: 1 | Urgents: 1"
+    )
