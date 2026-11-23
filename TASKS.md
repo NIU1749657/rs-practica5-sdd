@@ -48,6 +48,6 @@ Objectiu: Implementar `list --summary` per mostrar el recompte global de tasques
 Objectiu: Implementar `list --subject` i `list --keyword` per filtrar tasques.
 
 ### Tasques d'Execució (Part B):
-- [ ] Tasca 3.3: Actualitzar el comandament `list` a `src/tasks_app.py` per suportar els filtres `--subject <assignatura>` i `--keyword <paraula>`. (Requisits RF-11 i RF-12)
+- [x] Tasca 3.3: Actualitzar el comandament `list` a `src/tasks_app.py` per suportar els filtres `--subject <assignatura>` i `--keyword <paraula>`. (Requisits RF-11 i RF-12)
 - [ ] Tasca 3.4: Afegir tests d'integració a `test/test_tasks_app.py` per als escenaris GS-10 i GS-11 i verificar que tots els tests passen (`python3 -m pytest test`).
 

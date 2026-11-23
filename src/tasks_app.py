@@ -112,13 +112,41 @@ def resum_tasques(tasques: list[Task], avui: date | None = None) -> str:
     )
 
 
-def llistar_tasques(resum: bool = False) -> None:
+def filtrar_tasques(
+    tasques: list[Task],
+    assignatura: str | None = None,
+    paraula_clau: str | None = None,
+) -> list[Task]:
+    if assignatura is not None:
+        tasques = [
+            tasca
+            for tasca in tasques
+            if tasca.assignatura.casefold() == assignatura.casefold()
+        ]
+    if paraula_clau is not None:
+        tasques = [
+            tasca
+            for tasca in tasques
+            if paraula_clau.casefold() in tasca.títol.casefold()
+        ]
+    return tasques
+
+
+def llistar_tasques(
+    resum: bool = False,
+    assignatura: str | None = None,
+    paraula_clau: str | None = None,
+) -> None:
     tasques = carregar_tasques()
     if resum:
         print(resum_tasques(tasques))
         return
     if not tasques:
         print("Registre de tasques buit.")
+        return
+    tasques = filtrar_tasques(tasques, assignatura, paraula_clau)
+    if not tasques:
+        print("No s'han trobat tasques amb els filtres especificats.")
         return
     avui = date.today()
     for tasca in tasques:
@@ -175,6 +203,12 @@ def crear_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Mostrar un resum estadístic de les tasques",
     )
+    parser_list.add_argument(
+        "--subject", help="Filtrar les tasques per assignatura"
+    )
+    parser_list.add_argument(
+        "--keyword", help="Filtrar les tasques per paraula clau del títol"
+    )
     return parser
 
 
@@ -190,7 +224,7 @@ def main(argv: list[str] | None = None) -> None:
     elif args.comandament == "complete":
         completar_tasca(args.id)
     elif args.comandament == "list":
-        llistar_tasques(args.summary)
+        llistar_tasques(args.summary, args.subject, args.keyword)
 
 
 if __name__ == "__main__":
