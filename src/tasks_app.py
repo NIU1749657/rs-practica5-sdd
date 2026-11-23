@@ -92,8 +92,31 @@ def etiqueta_alerta(tasca: Task, avui: date | None = None) -> str:
     return ""
 
 
-def llistar_tasques() -> None:
+def resum_tasques(tasques: list[Task], avui: date | None = None) -> str:
+    if avui is None:
+        avui = date.today()
+    pendents = sum(1 for tasca in tasques if tasca.estat == "pendent")
+    completades = sum(1 for tasca in tasques if tasca.estat == "completada")
+    caducades = 0
+    urgents = 0
+    for tasca in tasques:
+        etiqueta = etiqueta_alerta(tasca, avui).strip()
+        if etiqueta == "[CADUCADA]":
+            caducades += 1
+        elif etiqueta == "[URGENT]":
+            urgents += 1
+    return (
+        f"Total: {len(tasques)} | Pendents: {pendents} | "
+        f"Completades: {completades} | Caducades: {caducades} | "
+        f"Urgents: {urgents}"
+    )
+
+
+def llistar_tasques(resum: bool = False) -> None:
     tasques = carregar_tasques()
+    if resum:
+        print(resum_tasques(tasques))
+        return
     if not tasques:
         print("Registre de tasques buit.")
         return
@@ -144,7 +167,14 @@ def crear_parser() -> argparse.ArgumentParser:
         "--id", required=True, type=int, help="Identificador de la tasca"
     )
 
-    subparsers.add_parser("list", help="Llistar totes les tasques")
+    parser_list = subparsers.add_parser(
+        "list", help="Llistar totes les tasques"
+    )
+    parser_list.add_argument(
+        "--summary",
+        action="store_true",
+        help="Mostrar un resum estadístic de les tasques",
+    )
     return parser
 
 
@@ -160,7 +190,7 @@ def main(argv: list[str] | None = None) -> None:
     elif args.comandament == "complete":
         completar_tasca(args.id)
     elif args.comandament == "list":
-        llistar_tasques()
+        llistar_tasques(args.summary)
 
 
 if __name__ == "__main__":
