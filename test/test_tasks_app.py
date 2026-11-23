@@ -48,6 +48,7 @@ def test_gs01_creacio_correcta_duna_tasca(app):
             "títol": "Pràctica 1",
             "assignatura": "RS",
             "estat": "pendent",
+            "data_limit": None,
         }
     ]
 

@@ -24,11 +24,17 @@ def desar_tasques(tasques: list[Task]) -> None:
         json.dump(registres, fitxer, ensure_ascii=False, indent=2)
 
 
-def afegir_tasca(títol: str, assignatura: str) -> None:
+def afegir_tasca(
+    títol: str, assignatura: str, data_limit: str | None = None
+) -> None:
     tasques = carregar_tasques()
     nou_id = max((tasca.id for tasca in tasques), default=0) + 1
     tasca = Task(
-        id=nou_id, títol=títol, assignatura=assignatura, estat="pendent"
+        id=nou_id,
+        títol=títol,
+        assignatura=assignatura,
+        estat="pendent",
+        data_limit=data_limit,
     )
     tasques.append(tasca)
     desar_tasques(tasques)
@@ -61,6 +67,9 @@ def crear_parser() -> argparse.ArgumentParser:
     parser_add.add_argument(
         "--subject", required=True, help="Assignatura de la tasca"
     )
+    parser_add.add_argument(
+        "--due", help="Data límit opcional (YYYY-MM-DD)"
+    )
 
     subparsers.add_parser("list", help="Llistar totes les tasques")
     return parser
@@ -70,7 +79,7 @@ def main(argv: list[str] | None = None) -> None:
     parser = crear_parser()
     args = parser.parse_args(argv)
     if args.comandament == "add":
-        afegir_tasca(args.title, args.subject)
+        afegir_tasca(args.title, args.subject, args.due)
     elif args.comandament == "list":
         llistar_tasques()
 

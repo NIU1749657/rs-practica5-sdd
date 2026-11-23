@@ -8,11 +8,13 @@ class Task:
         títol: str,
         assignatura: str,
         estat: str = "pendent",
+        data_limit: str | None = None,
     ) -> None:
         self.id = id
         self.títol = títol
         self.assignatura = assignatura
         self.estat = estat
+        self.data_limit = data_limit
 
     def to_dict(self) -> dict:
         return {
@@ -20,6 +22,7 @@ class Task:
             "títol": self.títol,
             "assignatura": self.assignatura,
             "estat": self.estat,
+            "data_limit": self.data_limit,
         }
 
     def to_json(self) -> str:
@@ -32,6 +35,7 @@ class Task:
             títol=dades["títol"],
             assignatura=dades["assignatura"],
             estat=dades["estat"],
+            data_limit=dades.get("data_limit"),
         )
 
     @classmethod
