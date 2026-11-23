@@ -1,5 +1,6 @@
 import argparse
 import json
+from datetime import date
 from pathlib import Path
 
 from models import Task
@@ -7,6 +8,7 @@ from models import Task
 FITXER_TASQUES = (
     Path(__file__).resolve().parent.parent / "data" / "tasks.json"
 )
+DIES_URGENT = 7
 
 
 def carregar_tasques() -> list[Task]:
@@ -41,15 +43,31 @@ def afegir_tasca(
     print(f"Tasca [ID: {tasca.id}] creada amb èxit")
 
 
+def etiqueta_alerta(tasca: Task, avui: date | None = None) -> str:
+    if tasca.estat != "pendent" or tasca.data_limit is None:
+        return ""
+    if avui is None:
+        avui = date.today()
+    data_limit = date.fromisoformat(tasca.data_limit)
+    dies = (data_limit - avui).days
+    if dies < 0:
+        return " [CADUCADA]"
+    if dies < DIES_URGENT:
+        return " [URGENT]"
+    return ""
+
+
 def llistar_tasques() -> None:
     tasques = carregar_tasques()
     if not tasques:
         print("Registre de tasques buit.")
         return
+    avui = date.today()
     for tasca in tasques:
         print(
             f"[{tasca.id}] {tasca.títol} "
             f"({tasca.assignatura}) - estat: {tasca.estat}"
+            f"{etiqueta_alerta(tasca, avui)}"
         )
 
 
