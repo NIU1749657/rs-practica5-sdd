@@ -1,4 +1,4 @@
-# SPECIFICATIONS.md — Sistema Tasks_app (v1.0)
+# SPECIFICATIONS.md — Sistema Tasks_app (v1.3)
 
 ## 1. Visió General
 Tasks_app és una eina CLI lleugera per ajudar als estudiants a gestionar les seves tasques acadèmiques diàries.
@@ -10,6 +10,7 @@ Tasks_app és una eina CLI lleugera per ajudar als estudiants a gestionar les se
 - US-04: Com a estudiant, vull visualitzar etiquetes d'alerta (`[CADUCADA]` o `[URGENT]`) en llistar les tasques pendents per prioritzar les més properes.
 - US-05: Com a estudiant, vull modificar qualsevol atribut d'una tasca existent a partir del seu identificador per corregir possibles errors en registrar-la.
 - US-06: Com a estudiant, vull marcar una tasca com a completada a partir del seu identificador per portar el control de la feina feta.
+- US-07: Com a estudiant, vull consultar un resum estadístic de les meves tasques per conèixer d'un cop d'ull l'estat global del curs.
 
 ## 3. Model de Dades (Mermaid)
 ```mermaid
@@ -33,6 +34,7 @@ classDiagram
 - RF-07: Si una tasca amb estat 'pendent' té una data límit igual o posterior al dia actual però inferior a 7 dies vista, el sistema tasks_app ha de mostrar l'etiqueta [URGENT] al final de la seva línia en llistar-la.
 - RF-08: El sistema tasks_app ha de proveir a l'estudiant la capacitat de modificar qualsevol atribut d'una tasca existent (--title, --subject, --due, --status) identificant-la mitjançant el comandament edit --id <ID> [--title <títol>] [--subject <assignatura>] [--due <YYYY-MM-DD>] [--status <estat>].
 - RF-09: El sistema tasks_app ha de proveir a l'estudiant la capacitat de marcar una tasca existent com a 'completada' identificant-la mitjançant el comandament complete --id <ID>.
+- RF-10: El sistema tasks_app ha de proveir a l'estudiant la capacitat de visualitzar un resum estadístic mitjançant el comandament list --summary, mostrant la quantitat total de tasques i el recompte de tasques pendents, completades, caducades i urgents.
 
 ## 5. Criteris d’acceptació i proves (Gherkin scenarios)
 - GS-01: Creació correcta d'una tasca
@@ -72,3 +74,4 @@ aleshores el sistema mostra per pantalla:
 "[2] Examen demà (SO) - estat: pendent [URGENT]"
 - GS-07: Modificació dels atributs d'una tasca existent per ID Atès que el fitxer data/tasks.json conté una tasca amb ID 1, títol 'Pràctica 1', assignatura 'RS' i estat 'pendent' quan l'estudiant executa python3 src/tasks_app.py edit --id 1 --title 'Pràctica 1 Corregida' --due 2026-12-15 aleshores el sistema confirma Tasca [ID: 1] modificada amb èxit i al fitxer data/tasks.json la tasca amb ID 1 té el títol 'Pràctica 1 Corregida' i data_limit igual a '2026-12-15'.
 - GS-08: Marcar una tasca com a completada per ID Atès que el fitxer data/tasks.json conté una tasca amb ID 1, títol 'Pràctica 1', assignatura 'RS' i estat 'pendent' quan l'estudiant executa python3 src/tasks_app.py complete --id 1 aleshores el sistema confirma Tasca [ID: 1] marcada com a completada i al fitxer data/tasks.json la tasca amb ID 1 té l'estat 'completada'.
+- GS-09: Visualització del resum estadístic de tasques Atès que el fitxer data/tasks.json conté 3 tasques: 1 completada, 1 pendent caducada i 1 pendent urgent quan l'estudiant executa python3 src/tasks_app.py list --summary aleshores el sistema mostra el recompte exacte amb el format: "Total: 3 | Pendents: 2 | Completades: 1 | Caducades: 1 | Urgents: 1"
